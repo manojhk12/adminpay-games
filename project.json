@@ -1,0 +1,24 @@
+{
+  "overview": "AdminPay Games is a full-stack payment management and betting platform where users maintain wallets funded through admin-approved deposits. Users can play three betting games — Coin Flip, Dice Roll, and Roulette — using their approved balances with instant payouts. All deposit and withdrawal operations remain under strict admin control.",
+  "features": [
+    "Coin Flip (2x payout)",
+    "Dice Roll with number prediction (6x payout)",
+    "Roulette Red/Black (2x payout)",
+    "Instant wallet updates after game results",
+    "Game history with bet tracking",
+    "Admin-controlled deposits and withdrawals",
+    "User wallet management",
+    "Full transaction history"
+  ],
+  "category": "gaming-finance",
+  "tags": [
+    "betting",
+    "games",
+    "wallet",
+    "payments",
+    "admin",
+    "motoko",
+    "react"
+  ],
+  "last_updated": "2026-04-24T16:08:13.494Z"
+}

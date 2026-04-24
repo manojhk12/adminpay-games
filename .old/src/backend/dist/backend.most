@@ -1,0 +1,89 @@
+// Version: 1.0.0
+type BetId__349217093 = Nat;
+type BetRecord__268611201 =
+  {
+    betAmount : Nat;
+    gameType : GameType__993776910;
+    id : BetId__349217093;
+    isWin : Bool;
+    outcome : GameResult__104643927;
+    payout : Nat;
+    playerChoice : GameResult__104643927;
+    timestamp : Timestamp__301639476;
+    userId : UserId__158757552
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type ExternalBlob__671167343 = Blob;
+type GameResult__104643927 = {#black; #dice : Nat; #heads; #red; #tails};
+type GameType__993776910 = {#coinFlip; #diceRoll; #roulette};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type Timestamp__301639476 = Int;
+type TransactionId__138870153 = Nat;
+type TransactionStatus__628660341 = {#approved; #pending; #rejected};
+type TransactionType__47031955 = {#deposit; #withdraw};
+type Transaction__822992244 =
+  {
+    var adminNote : ?Text;
+    amount : Nat;
+    createdAt : Timestamp__301639476;
+    id : TransactionId__138870153;
+    var paymentProof : ?ExternalBlob__671167343;
+    var status : TransactionStatus__628660341;
+    transactionType : TransactionType__47031955;
+    userId : UserId__158757552;
+    withdrawalDestination : ?WithdrawalDestination__1021884104
+  };
+type UserId__158757552 = Principal;
+type UserProfile__277265826 =
+  {
+    createdAt : Timestamp__301639476;
+    id : UserId__158757552;
+    var status : UserStatus__357598751;
+    var walletBalance : Nat
+  };
+type UserRole__1073662873 = {#admin; #guest; #user};
+type UserStatus__357598751 = {#active; #blocked};
+type WithdrawalDestination__1021884104 = {bankDetails : ?Text; upiId : Text};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable adminSettings :
+    {
+      var minDepositAmount : Nat;
+      var minWithdrawAmount : Nat;
+      var qrCode : ?ExternalBlob__671167343;
+      var upiId : Text
+    };
+  stable betCounter : {var id : Nat};
+  stable bets :
+    {
+      var root : Node__46230540<BetId__349217093, BetRecord__268611201>;
+      var size : Nat__490723111
+    };
+  stable nextTxId : {var id : Nat};
+  stable transactions :
+    {
+      var root :
+        Node__46230540<TransactionId__138870153, Transaction__822992244>;
+      var size : Nat__490723111
+    };
+  stable users :
+    {
+      var root : Node__46230540<UserId__158757552, UserProfile__277265826>;
+      var size : Nat__490723111
+    }
+};

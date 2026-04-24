@@ -1,0 +1,243 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: "Space Grotesk";
+    --font-body: "DM Sans";
+    --font-mono: "Geist Mono";
+    --radius: 0.625rem;
+
+    --background: 0.99 0 0;
+    --foreground: 0.15 0 0;
+    --card: 1.0 0 0;
+    --card-foreground: 0.15 0 0;
+    --popover: 1.0 0 0;
+    --popover-foreground: 0.15 0 0;
+
+    --primary: 0.35 0 0;
+    --primary-foreground: 0.98 0 0;
+
+    --secondary: 0.95 0 0;
+    --secondary-foreground: 0.25 0 0;
+    --muted: 0.95 0 0;
+    --muted-foreground: 0.5 0 0;
+
+    --accent: 0.35 0 0;
+    --accent-foreground: 0.98 0 0;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.98 0 0;
+
+    --border: 0.9 0 0;
+    --input: 0.9 0 0;
+    --ring: 0.35 0 0;
+
+    --chart-1: 0.65 0.22 40;
+    --chart-2: 0.6 0.12 185;
+    --chart-3: 0.4 0.07 227;
+    --chart-4: 0.83 0.19 84;
+    --chart-5: 0.77 0.19 70;
+
+    --sidebar: 0.98 0 0;
+    --sidebar-foreground: 0.15 0 0;
+    --sidebar-primary: 0.35 0 0;
+    --sidebar-primary-foreground: 0.98 0 0;
+    --sidebar-accent: 0.95 0 0;
+    --sidebar-accent-foreground: 0.25 0 0;
+    --sidebar-border: 0.9 0 0;
+    --sidebar-ring: 0.35 0 0;
+  }
+
+  .dark {
+    --background: 0.11 0.008 260;
+    --foreground: 0.93 0.01 260;
+    --card: 0.16 0.01 260;
+    --card-foreground: 0.93 0.01 260;
+    --popover: 0.19 0.012 260;
+    --popover-foreground: 0.93 0.01 260;
+
+    --primary: 0.72 0.23 260;
+    --primary-foreground: 0.11 0.008 260;
+
+    --secondary: 0.62 0.18 290;
+    --secondary-foreground: 0.93 0.01 290;
+    --muted: 0.22 0.01 260;
+    --muted-foreground: 0.58 0.01 260;
+
+    --accent: 0.72 0.23 260;
+    --accent-foreground: 0.11 0.008 260;
+
+    --destructive: 0.58 0.21 18;
+    --destructive-foreground: 0.93 0.01 18;
+
+    --border: 0.25 0.01 260;
+    --input: 0.25 0.01 260;
+    --ring: 0.72 0.23 260;
+
+    --chart-1: 0.72 0.23 260;
+    --chart-2: 0.62 0.18 290;
+    --chart-3: 0.6 0.16 150;
+    --chart-4: 0.55 0.18 18;
+    --chart-5: 0.65 0.15 80;
+
+    --sidebar: 0.14 0.009 260;
+    --sidebar-foreground: 0.93 0.01 260;
+    --sidebar-primary: 0.72 0.23 260;
+    --sidebar-primary-foreground: 0.11 0.008 260;
+    --sidebar-accent: 0.22 0.01 260;
+    --sidebar-accent-foreground: 0.82 0.01 260;
+    --sidebar-border: 0.25 0.01 260;
+    --sidebar-ring: 0.72 0.23 260;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @font-face {
+    font-family: "Space Grotesk";
+    src: url("/assets/fonts/SpaceGrotesk.woff2") format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "DM Sans";
+    src: url("/assets/fonts/DMSans.woff2") format("woff2");
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Geist Mono";
+    src: url("/assets/fonts/GeistMono.woff2") format("woff2");
+    font-display: swap;
+  }
+
+  .game-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold uppercase tracking-widest;
+  }
+
+  .game-badge-pending {
+    @apply game-badge bg-yellow-900/30 text-yellow-400 border border-yellow-700/50;
+  }
+
+  .game-badge-approved {
+    @apply game-badge bg-green-900/30 text-green-400 border border-green-700/50;
+  }
+
+  .game-badge-rejected {
+    @apply game-badge bg-destructive/20 text-destructive border border-destructive/30;
+  }
+
+  .status-indicator {
+    @apply relative inline-block w-2 h-2 rounded-full;
+  }
+
+  .status-pending {
+    @apply status-indicator bg-yellow-400 animate-pulse;
+  }
+
+  .status-approved {
+    @apply status-indicator bg-green-400;
+  }
+
+  .status-rejected {
+    @apply status-indicator bg-destructive;
+  }
+
+  /* Game-specific tokens */
+  .game-card {
+    @apply bg-card border border-border rounded-lg p-6 transition-smooth;
+  }
+
+  .game-card:hover {
+    @apply border-primary/50;
+  }
+
+  .game-title {
+    @apply text-2xl font-bold font-display text-foreground tracking-tight;
+  }
+
+  .game-odds {
+    @apply text-sm font-mono text-muted-foreground;
+  }
+
+  .game-payout {
+    @apply font-mono font-semibold text-accent;
+  }
+
+  .game-button-group {
+    @apply flex gap-3 justify-center items-center;
+  }
+
+  .game-toggle {
+    @apply px-4 py-2 rounded-md font-semibold text-sm transition-smooth border border-border;
+  }
+
+  .game-toggle.active {
+    @apply bg-primary text-primary-foreground border-primary;
+  }
+
+  .game-toggle:not(.active) {
+    @apply bg-muted text-muted-foreground hover:bg-muted;
+    opacity: 0.85;
+  }
+  .game-toggle:not(.active):hover {
+    opacity: 1;
+  }
+
+  .game-number-selector {
+    @apply inline-flex gap-1.5;
+  }
+
+  .game-number-button {
+    @apply w-12 h-12 flex items-center justify-center rounded-md border border-border bg-muted text-muted-foreground font-mono font-bold text-sm transition-smooth hover:border-primary hover:bg-muted;
+    opacity: 0.9;
+  }
+  .game-number-button:hover {
+    opacity: 1;
+  }
+
+  .game-number-button.selected {
+    @apply bg-primary text-primary-foreground border-primary;
+  }
+
+  .game-play-button {
+    @apply px-6 py-3 bg-primary text-primary-foreground font-bold text-sm rounded-md uppercase tracking-widest transition-smooth hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .game-result-win {
+    @apply text-accent font-bold;
+  }
+
+  .game-result-loss {
+    @apply text-destructive font-bold;
+  }
+
+  .game-result-overlay {
+    @apply absolute inset-0 backdrop-blur-sm rounded-lg flex flex-col items-center justify-center gap-4 bg-card;
+    opacity: 0.95;
+    animation: slideIn 0.25s ease-out forwards;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

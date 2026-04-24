@@ -1,0 +1,169 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type WithdrawalDestination = 
+ record {
+   bankDetails: opt text;
+   upiId: text;
+ };
+type UserStatus = 
+ variant {
+   active;
+   blocked;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserProfilePublic = 
+ record {
+   createdAt: Timestamp;
+   id: UserId;
+   status: UserStatus;
+   walletBalance: nat;
+ };
+type UserId = principal;
+type UpdateAdminSettingsArgs = 
+ record {
+   minDepositAmount: nat;
+   minWithdrawAmount: nat;
+   qrCode: opt ExternalBlob;
+   upiId: text;
+ };
+type TransactionType = 
+ variant {
+   deposit;
+   withdraw;
+ };
+type TransactionStatus = 
+ variant {
+   approved;
+   pending;
+   rejected;
+ };
+type TransactionPublic = 
+ record {
+   adminNote: opt text;
+   amount: nat;
+   createdAt: Timestamp;
+   id: TransactionId;
+   paymentProof: opt ExternalBlob;
+   status: TransactionStatus;
+   transactionType: TransactionType;
+   userId: UserId;
+   withdrawalDestination: opt WithdrawalDestination;
+ };
+type TransactionId = nat;
+type Timestamp = int;
+type Result_2 = 
+ variant {
+   err: text;
+   ok: BetRecordPublic;
+ };
+type Result_1 = 
+ variant {
+   err: text;
+   ok;
+ };
+type Result = 
+ variant {
+   err: text;
+   ok: TransactionId;
+ };
+type GameType = 
+ variant {
+   coinFlip;
+   diceRoll;
+   roulette;
+ };
+type GameResult = 
+ variant {
+   black;
+   dice: nat;
+   heads;
+   red;
+   tails;
+ };
+type ExternalBlob = blob;
+type DashboardStats = 
+ record {
+   totalApprovedDepositAmount: nat;
+   totalApprovedWithdrawalAmount: nat;
+   totalPendingDeposits: nat;
+   totalPendingWithdrawals: nat;
+   totalUsers: nat;
+ };
+type BetRecordPublic = 
+ record {
+   betAmount: nat;
+   gameType: GameType;
+   id: BetId;
+   isWin: bool;
+   outcome: GameResult;
+   payout: nat;
+   playerChoice: GameResult;
+   timestamp: Timestamp;
+   userId: UserId;
+ };
+type BetId = nat;
+type AdminSettingsPublic = 
+ record {
+   minDepositAmount: nat;
+   minWithdrawAmount: nat;
+   qrCode: opt ExternalBlob;
+   upiId: text;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  adminGetAllBets: () -> (vec BetRecordPublic);
+  approveDeposit: (txId: TransactionId, note: opt text) -> (Result_1);
+  approveWithdrawal: (txId: TransactionId, note: opt text) -> (Result_1);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  blockUser: (userId: UserId) -> ();
+  getAdminSettings: () -> (AdminSettingsPublic) query;
+  getAllTransactions: () -> (vec TransactionPublic) query;
+  getAllUsers: () -> (vec UserProfilePublic) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getDashboardStats: () -> (DashboardStats) query;
+  getMyBets: () -> (vec BetRecordPublic) query;
+  getMyProfile: () -> (opt UserProfilePublic) query;
+  getMyTransactions: () -> (vec TransactionPublic) query;
+  getMyWalletBalance: () -> (nat) query;
+  getPendingDeposits: () -> (vec TransactionPublic) query;
+  getPendingWithdrawals: () -> (vec TransactionPublic) query;
+  getUser: (userId: UserId) -> (opt UserProfilePublic) query;
+  /// Promote the caller to admin. Only works if no admin exists yet (first call).
+  initializeAdmin: () -> ();
+  isCallerAdmin: () -> (bool) query;
+  placeBet: (gameType: GameType, betAmount: nat, playerChoice: GameResult) ->
+   (Result_2);
+  registerUser: () -> (UserProfilePublic);
+  rejectDeposit: (txId: TransactionId, note: text) -> (Result_1);
+  rejectWithdrawal: (txId: TransactionId, note: text) -> (Result_1);
+  requestDeposit: (amount: nat, paymentProof: ExternalBlob) -> (Result);
+  requestWithdrawal: (amount: nat, upiId: text, bankDetails: opt text) ->
+   (Result);
+  unblockUser: (userId: UserId) -> ();
+  updateAdminSettings: (args: UpdateAdminSettingsArgs) -> ();
+}
